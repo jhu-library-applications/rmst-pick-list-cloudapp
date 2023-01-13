@@ -5,7 +5,8 @@
   "license": "BSD-3-Clause",
   "private": true,
   "scripts": {
-    "start": "eca start"
+    "start": "eca start",
+    "test": "eca test"
   },
   "dependencies": {
     "@angular/animations": "~11.2.14",
