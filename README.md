@@ -1,5 +1,7 @@
 # RMST Pick List Cloud App
 
+[![RMST Picklist CI](https://github.com/jhu-library-applications/rmst-pick-list-cloudapp/actions/workflows/ci.yml/badge.svg)](https://github.com/jhu-library-applications/rmst-pick-list-cloudapp/actions/workflows/ci.yml)
+
 This is an ExLibris Cloud App for printing an RMST pick list. 
 
 ## Running the application
