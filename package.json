@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "eca start",
-    "test": "eca test"
+    "test": "cd .ng/ && ng test"
   },
   "dependencies": {
     "@angular/animations": "~11.2.14",

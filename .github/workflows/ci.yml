@@ -11,5 +11,5 @@ jobs:
           node-version: 16
           cache: 'npm'
       - run: npm install -g @exlibris/exl-cloudapp-cli
-      - run: eca test
+      - run: npm test
  
