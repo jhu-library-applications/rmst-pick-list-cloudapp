@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "eca start",
-    "test": "cd .ng/ && ng test"
+    "test": "cd .ng/ && ng test --browsers=ChromeHeadless --progress=false --watch=false --code-coverage --source-map=false"
   },
   "dependencies": {
     "@angular/animations": "~11.2.14",
