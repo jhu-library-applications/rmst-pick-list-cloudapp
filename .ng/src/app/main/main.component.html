@@ -1,7 +1,9 @@
 <h1>RMST Pick List</h1>
 <ul>
   <li *ngFor="let item of items" [value]="item">
-    {{ item.storage_location_id }}
+    {{ item.bib_data.title }}
+    {{ item.item_data.storage_location_id }} /
+    {{ item.item_data.barcode }}
   </li>
 </ul>
 <app-print-button></app-print-button>
