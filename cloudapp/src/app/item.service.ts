@@ -27,4 +27,16 @@ export class ItemService {
 
   }
 
+  sortItems(items: any) {
+    return items.sort((a, b) => {
+      if (a.item_data.storage_location_id < b.item_data.storage_location_id ) {
+        return -1;
+      }
+      if (a.item_data.storage_location_id > b.item_data.storage_location_id ) {
+        return 1;
+      }
+      return 0;
+    })
+  }
 }
+    

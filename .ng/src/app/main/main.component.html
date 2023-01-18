@@ -1,9 +1,11 @@
 <h1>RMST Pick List</h1>
-<ul>
-  <li *ngFor="let item of items" [value]="item">
-    {{ item.bib_data.title }}
-    {{ item.item_data.storage_location_id }} /
+<div>
+  <mat-card *ngFor="let item of items" [value]="item">
+    <mat-card-title-group>
+    <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
+    <mat-card-subtitle>{{ item.item_data.storage_location_id }}</mat-card-subtitle>
+  </mat-card-title-group>
     {{ item.item_data.barcode }}
-  </li>
-</ul>
+</mat-card>
+</div>
 <app-print-button></app-print-button>

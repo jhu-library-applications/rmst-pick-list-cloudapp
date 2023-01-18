@@ -1,11 +1,8 @@
 import { Observable, of } from 'rxjs';
-import { filter, finalize, switchMap, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  CloudAppRestService, CloudAppEventsService, Request, HttpMethod,
-  Entity, RestErrorResponse, AlertService
+  CloudAppRestService, CloudAppEventsService, Entity, AlertService
 } from '@exlibris/exl-cloudapp-angular-lib';
-import { MatRadioChange } from '@angular/material/radio';
 import { Item } from '../models/item.model';
 import { ItemService } from '../item.service';
 
@@ -34,7 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.itemService = new ItemService(this.restService, this.eventsService);
     this.itemService.getItems().subscribe({
-      next: (item) => { this.items.push(item as Item) },
+      next: (item) => { this.items.push(item as Item); this.itemService.sortItems(this.items) },
       error: (err) => { this.alert.error(err) }
     })
 
