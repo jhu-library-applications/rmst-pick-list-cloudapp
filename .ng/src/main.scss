@@ -8,4 +8,12 @@
 
 @mixin global-styles {
     /* Add global styles here */
+
+    @media print {
+        @page { 
+          size: 8.5in 11in;
+          margin: .25in;
+          margin-bottom: .5in;
+        }
+      }
 }
