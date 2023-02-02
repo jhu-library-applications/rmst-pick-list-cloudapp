@@ -1,4 +1,3 @@
-
 <div *ngIf="items.length <= 0">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
@@ -6,10 +5,19 @@
 <div *ngIf="items.length > 0">
   <mat-card *ngFor="let item of items" [value]="item">
     <mat-card-title-group>
-    <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
-    <mat-card-subtitle>{{ item.item_data.storage_location_id }}</mat-card-subtitle>
-  </mat-card-title-group>
-    {{ item.item_data.barcode }}
-</mat-card>
+      <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
+    </mat-card-title-group>
+    <mat-card-content>
+          <ul>
+
+            <li>
+              <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
+            </li>
+            <li>
+              <b>Barcode</b>: {{ item.item_data.barcode }}
+            </li>
+          </ul>
+    </mat-card-content>
+  </mat-card>
 </div>
 <app-print-button></app-print-button>
