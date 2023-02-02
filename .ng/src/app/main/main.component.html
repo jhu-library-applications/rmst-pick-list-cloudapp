@@ -1,5 +1,9 @@
-<h1>RMST Pick List</h1>
-<div>
+
+<div *ngIf="items.length <= 0">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<div *ngIf="items.length > 0">
   <mat-card *ngFor="let item of items" [value]="item">
     <mat-card-title-group>
     <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
