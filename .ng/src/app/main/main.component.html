@@ -1,24 +1,38 @@
 <div *ngIf="items.length <= 0">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
+<mat-card>
+  <mat-card-header><h1>RMST Pick List</h1></mat-card-header>
+  <mat-card-content>
+    <ul>
+      <li>
+        <b>Today's Date</b>: {{ today | date: 'mediumDate' }}
+      </li>
+      <li>
+        <p><b>Total</b>: {{ items.length }}</p>
+      </li>
+    </ul>
+  </mat-card-content>
+</mat-card>
 
 <div *ngIf="items.length > 0">
-  <mat-card *ngFor="let item of items" [value]="item">
+  <mat-card *ngFor="let item of items; index as i" [value]="item">
     <mat-card-title-group>
-      <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
+      <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
     </mat-card-title-group>
     <mat-card-content>
           <ul>
-
             <li>
               <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
             </li>
             <li>
               <b>Barcode</b>: {{ item.item_data.barcode }}
             </li>
+            <li>
+              <b>Item status</b>: {{ item.item_data.base_status.desc }}
+            </li>
           </ul>
     </mat-card-content>
   </mat-card>
-  <p>Total: {{ items.length }}</p>
 </div>
 <app-print-button></app-print-button>

@@ -5,6 +5,7 @@ import {
 } from '@exlibris/exl-cloudapp-angular-lib';
 import { Item } from '../models/item.model';
 import { ItemService } from '../item.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-main',
@@ -15,10 +16,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   loading = false;
   apiResult: any;
-
-  entities$: Observable<Entity[]> = this.eventsService.entities$
-
+  entities$: Observable<Entity[]> = this.eventsService.entities$;
   items: Array<Item> = [];
+  today: number = Date.now();
 
   constructor(
     private restService: CloudAppRestService,

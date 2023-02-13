@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CloudAppEventsService, CloudAppRestService } from '@exlibris/exl-cloudapp-angular-lib';
-import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,7 @@ export class ItemService {
       mergeMap(response => this.restService.call(response.holdings.link)),
       mergeMap(holdings => holdings.holding),
       mergeMap(holding => this.restService.call(holding['link'] + "/items")),
-      mergeMap(items => items.item),
-      map(item => item)
+      mergeMap(items => items.item)
     )
 
   }

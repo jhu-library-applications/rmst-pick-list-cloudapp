@@ -172,5 +172,6 @@
         bib_data: BibData;
         holding_data: HoldingData;
         item_data: ItemData;
+        request_data: null;
         link: string;
     }
