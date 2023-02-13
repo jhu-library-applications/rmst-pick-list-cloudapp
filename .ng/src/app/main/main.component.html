@@ -18,6 +18,9 @@
             </li>
           </ul>
     </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="removeItem(item)">Remove</button>
+    </mat-card-actions>
   </mat-card>
   <p>Total: {{ items.length }}</p>
 </div>

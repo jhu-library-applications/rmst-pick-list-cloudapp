@@ -27,6 +27,9 @@ export class MainComponent implements OnInit, OnDestroy {
     private itemService: ItemService
   ) { }
 
+  removeItem(item: Item) {
+    this.items = this.items.filter(i => i !== item);
+  }
 
   ngOnInit() {
     this.itemService = new ItemService(this.restService, this.eventsService);
