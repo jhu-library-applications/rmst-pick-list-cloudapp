@@ -12,6 +12,10 @@
         link: string;
     }
 
+    export interface RequestData {
+        
+    }
+
     export interface PermanentCallNumberType {
         value: string;
         desc: string;
@@ -172,6 +176,6 @@
         bib_data: BibData;
         holding_data: HoldingData;
         item_data: ItemData;
-        request_data: null;
+        request_data: RequestData;
         link: string;
     }
