@@ -22,19 +22,25 @@ export class ItemService {
       mergeMap(holdings => holdings.holding),
       mergeMap(holding => this.restService.call(holding['link'] + "/items")),
       mergeMap(items => items.item),
-      // log the items
       tap(items => console.log(items)),
-      // Add request_data to each item that has a request and add an empty request data to each item that doesn't have a request
       mergeMap(item => this.restService.call(item['link'] + "/requests").pipe(
         map(requests => {
           if (requests.user_request) {
             item['request_data'] = requests.user_request;
             return item;
           } else {
-            item['request_data'] = {};
+            item['request_data'] = [{ user_primary_id: null }];
             return item;
           }
         })
+      )),
+      filter(item => item['request_data'][0]['user_primary_id'] !== null), // filter out items that don't have a user_primary_id
+      mergeMap(item => this.restService.call(`/almaws/v1/users/${item['request_data'][0]['user_primary_id']}`).pipe(
+        map(user => {
+          item['user_data'] = user;
+          return item;
+        }
+        )
       )),
       tap(items => console.log(items))
     )

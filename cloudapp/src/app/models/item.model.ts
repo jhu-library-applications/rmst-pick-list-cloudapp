@@ -177,5 +177,6 @@
         holding_data: HoldingData;
         item_data: ItemData;
         request_data: RequestData;
+        user_data: any;
         link: string;
     }
