@@ -32,9 +32,9 @@
               <b>Item status</b>: {{ item.item_data.base_status.desc }}
             </li>
           </ul>
-          
-          <div *ngIf="item.request_data[0]">
-            Requested by: {{ item.request_data[0].user_primary_id | json }}
+
+          <div *ngIf="item.user_data">
+            Requested by: {{ item.user_data.full_name }}
           </div>
           
     </mat-card-content>
