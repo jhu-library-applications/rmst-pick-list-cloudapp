@@ -6,5 +6,10 @@
    "icon": {
       "type": "font",
       "value": "fa fa-list"
+   },
+   "contentSecurity": {
+      "sandbox": {
+         "modals": true
+      }
    }
 }
