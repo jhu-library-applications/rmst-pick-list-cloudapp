@@ -1,9 +1,9 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   CloudAppRestService, CloudAppEventsService, Entity, AlertService
 } from '@exlibris/exl-cloudapp-angular-lib';
-import { Item } from '../models/item.model';
+import { Item } from '../interfaces/item.model';
 import { ItemService } from '../item.service';
 import { DatePipe } from '@angular/common';
 

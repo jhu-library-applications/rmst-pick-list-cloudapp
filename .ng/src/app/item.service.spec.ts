@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Observable } from 'rxjs';
 
 import { ItemService } from './item.service';
 
@@ -13,4 +14,9 @@ describe('ItemService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return an Observable', () => {
+    expect(service.getItems()).toBeInstanceOf(Observable);
+  });
+
 });
