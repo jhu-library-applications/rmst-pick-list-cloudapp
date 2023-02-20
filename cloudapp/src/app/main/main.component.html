@@ -33,9 +33,17 @@
             </li>
           </ul>
 
-          <div *ngIf="item.user_data">
-            Requested by: {{ item.user_data.full_name }}
+          <div *ngIf="item.request_data">
+            <div *ngFor="let request of item.request_data; index as i">
+              <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
+            </div> 
+
+            <div *ngIf="item.user_data">
+              Requested by: {{ item.user_data.full_name }} <span *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
+            </div>
           </div>
+          
+
           
     </mat-card-content>
     <mat-card-actions>
