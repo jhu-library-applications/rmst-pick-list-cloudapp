@@ -3,13 +3,18 @@
 </div>
 
 <div *ngIf="items.length > 0">
-  <mat-card *ngFor="let item of items" [value]="item">
+  <mat-form-field appearance="fill">
+    <mat-label>Hide/Show Blank RMST</mat-label>
+    <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
+      <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-card *ngFor="let item of items" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
     <mat-card-title-group>
       <mat-card-title>{{ item.bib_data.title }}</mat-card-title>
     </mat-card-title-group>
     <mat-card-content>
           <ul>
-
             <li>
               <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
             </li>
@@ -19,6 +24,6 @@
           </ul>
     </mat-card-content>
   </mat-card>
-  <p>Total: {{ items.length }}</p>
+  <p>Total: {{ itemCount }}</p>
 </div>
 <app-print-button></app-print-button>
