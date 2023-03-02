@@ -112,6 +112,7 @@
     }
 
     export interface ItemData {
+        hidden: boolean;
         pid: string;
         barcode: string;
         policy: Policy;
