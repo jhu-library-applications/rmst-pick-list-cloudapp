@@ -13,6 +13,7 @@ export class PrintButtonComponent implements OnInit {
   }
 
   print() {
+    console.log('print?')
     window.print();
   }
 }

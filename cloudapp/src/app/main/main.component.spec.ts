@@ -17,4 +17,8 @@ describe('MainComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a method to remove items from the list', () => {
+    expect(component.removeItem).toBeTruthy();
+  });
 })
