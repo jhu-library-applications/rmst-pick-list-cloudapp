@@ -16,7 +16,13 @@
 </mat-card>
 
 <div *ngIf="items.length > 0">
-  <mat-card *ngFor="let item of items; index as i">
+  <mat-form-field appearance="fill">
+    <mat-label>Hide/Show Blank RMST</mat-label>
+    <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
+      <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-card *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
     <mat-card-title-group>
       <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
     </mat-card-title-group>
@@ -50,5 +56,6 @@
       <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
     </mat-card-actions>
   </mat-card>
+  <p>Total: {{ itemCount }}</p>
 </div>
 <app-print-button></app-print-button>
