@@ -36,3 +36,9 @@ textarea {
 .hidden {
   display: none;
 }
+
+@media print {
+  .remove-button {
+      display: none;
+  }
+}
