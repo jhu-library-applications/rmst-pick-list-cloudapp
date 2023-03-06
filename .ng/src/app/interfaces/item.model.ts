@@ -168,6 +168,7 @@ export interface ItemData {
     committed_to_retain: CommittedToRetain;
     retention_reason: RetentionReason;
     retention_note: string;
+    hidden: boolean;
 }
 
 export interface Item {

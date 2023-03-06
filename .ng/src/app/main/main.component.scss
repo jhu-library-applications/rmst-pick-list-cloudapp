@@ -33,6 +33,10 @@ textarea {
   font-size: 0.9em;
 }
 
+.hidden {
+  display: none;
+}
+
 @media print {
   .remove-button {
       display: none;
