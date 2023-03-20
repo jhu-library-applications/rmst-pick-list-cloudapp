@@ -1,61 +1,80 @@
 <div *ngIf="items.length <= 0">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
-<mat-card>
-  <mat-card-header><h1>RMST Pick List</h1></mat-card-header>
-  <mat-card-content>
-    <ul>
-      <li>
-        <b>Today's Date</b>: {{ today | date: 'mediumDate' }}
-      </li>
-      <li>
-        <p><b>Total</b>: {{ items.length }}</p>
-      </li>
-    </ul>
-  </mat-card-content>
-</mat-card>
-
 <div *ngIf="items.length > 0">
-  <mat-form-field appearance="fill">
-    <mat-label>Hide/Show Blank RMST</mat-label>
-    <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
-      <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-card *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
-    <mat-card-title-group>
-      <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
-    </mat-card-title-group>
+  <mat-card>
+    <mat-card-header>
+      <h1>RMST Pick List</h1>
+    </mat-card-header>
     <mat-card-content>
-          <ul>
-            <li>
-              <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
-            </li>
-            <li>
-              <b>Barcode</b>: {{ item.item_data.barcode }}
-            </li>
-            <li>
-              <b>Item status</b>: {{ item.item_data.base_status.desc }}
-            </li>
-          </ul>
-
-          <div *ngIf="item.request_data">
-            <div *ngFor="let request of item.request_data; index as i">
-              <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
-            </div> 
-
-            <div *ngIf="item.user_data">
-              Requested by: {{ item.user_data.full_name }} <span *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
-            </div>
-          </div>
-          
-
-          
+      <ul>
+        <li>
+          <b>Today's Date</b>: {{ today | date: 'mediumDate' }}
+        </li>
+        <li>
+          <p><b>Total</b>: {{ items.length }}</p>
+        </li>
+      </ul>
     </mat-card-content>
-    <mat-card-actions>
-      <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
-    </mat-card-actions>
   </mat-card>
-  <p>Total: {{ itemCount }}</p>
+
+  <div *ngIf="items.length > 0">
+    <mat-form-field class="show-blank" appearance="fill">
+      <mat-label>Hide/Show Blank RMST</mat-label>
+      <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
+        <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-card *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
+      <mat-card-title-group>
+        <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
+      </mat-card-title-group>
+      <mat-card-content>
+        <ul>
+          <li>
+            <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
+          </li>
+          <li>
+            <b>Barcode</b>: {{ item.item_data.barcode }}
+          </li>
+          <li>
+            <b>Item status</b>: {{ item.item_data.base_status.desc }}
+          </li>
+        </ul>
+
+        <div *ngIf="item.request_data">
+          <mat-card *ngFor="let request of item.request_data; index as i">
+            <ul>
+              <li>
+                <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
+              </li>
+
+              <li>
+
+                <b>Pickup Location: {{ request.pickup_location }} </b>
+              </li>
+
+            </ul>
+          </mat-card>
+
+          <mat-card *ngFor="item.request_data">
+            <b>Pickup location: {{ item.request_data.pickup_location }} </b>
+          </mat-card>
+
+          <div *ngIf="item.user_data">
+            Requested by: {{ item.user_data.full_name }} <span
+              *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
+          </div>
+        </div>
+
+
+
+      </mat-card-content>
+      <mat-card-actions>
+        <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
+      </mat-card-actions>
+    </mat-card>
+    <p>Total: {{ itemCount }}</p>
+  </div>
+  <app-print-button></app-print-button>
 </div>
-<app-print-button></app-print-button>

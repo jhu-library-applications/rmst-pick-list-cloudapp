@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   CloudAppRestService, CloudAppEventsService, Entity, AlertService
 } from '@exlibris/exl-cloudapp-angular-lib';
 import { Item } from '../interfaces/item.model';
 import { ItemService } from '../item.service';
-import { DatePipe } from '@angular/common';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main',
@@ -13,12 +13,11 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
-
-  loading = false;
   apiResult: any;
   entities$: Observable<Entity[]> = this.eventsService.entities$;
   items: Array<Item> = [];
   itemCount = 0;
+  private destroyed$ = new Subject();
   selectOptions = [
     { value: '', label: 'Select an option' },
     { value: 'all', label: 'Show All' },
@@ -56,21 +55,26 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.items = [];
     this.itemService = new ItemService(this.restService, this.eventsService);
-    this.itemService.getItems().subscribe({
+    this.itemService.getItems().pipe(takeUntil(this.destroyed$)).subscribe({
       next: (item) => { 
         this.items.push(item as Item);
         this.itemService.sortItems(this.items);
         this.itemCount = this.items.length;
         this.items.forEach(item => item.item_data.hidden = false);
       },
-      error: (err) => { this.alert.error(err) }
+      complete: () => {},
+      error: (err) => { this.alert.error(err);  },
     })
-
 
   }
 
   ngOnDestroy(): void {
+   this.items = [];
+
+   this.destroyed$.next();
+   this.destroyed$.complete();
   }
 
 
