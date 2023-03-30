@@ -12,12 +12,13 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
+
 export class MainComponent implements OnInit, OnDestroy {
   apiResult: any;
   entities$: Observable<Entity[]> = this.eventsService.entities$;
   items: Array<Item> = [];
   itemCount = 0;
-  private destroyed$ = new Subject();
+  
   selectOptions = [
     { value: '', label: 'Select an option' },
     { value: 'all', label: 'Show All' },
@@ -25,6 +26,8 @@ export class MainComponent implements OnInit, OnDestroy {
   ];
 
   selectedOption = this.selectOptions[0].value;
+  loading: boolean;
+  noItemsMessage: string;
   
   selectOption(event: Event) {
     this.items.forEach(item => {
@@ -57,15 +60,22 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.items = [];
     this.itemService = new ItemService(this.restService, this.eventsService);
-    this.itemService.getItems().pipe(takeUntil(this.destroyed$)).subscribe({
+    this.loading = true
+    this.itemService.getItems().subscribe({
       next: (item) => { 
         this.items.push(item as Item);
         this.itemService.sortItems(this.items);
         this.itemCount = this.items.length;
         this.items.forEach(item => item.item_data.hidden = false);
+        this.loading = this.itemService.loading;
       },
-      complete: () => {},
-      error: (err) => { this.alert.error(err);  },
+      complete: () => {
+        this.loading = this.itemService.loading;
+      },
+      error: (err) => { 
+        this.loading = false;
+        this.alert.error(err);  
+      },
     })
 
   }
@@ -73,8 +83,6 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
    this.items = [];
 
-   this.destroyed$.next();
-   this.destroyed$.complete();
   }
 
 

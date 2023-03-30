@@ -1,4 +1,4 @@
-<div *ngIf="items.length <= 0">
+<div *ngIf="loading">
   <mat-spinner diameter="50"></mat-spinner>
 </div>
 <div *ngIf="items.length > 0">
@@ -18,63 +18,59 @@
     </mat-card-content>
   </mat-card>
 
-  <div *ngIf="items.length > 0">
+  <div>
     <mat-form-field class="show-blank" appearance="fill">
       <mat-label>Hide/Show Blank RMST</mat-label>
       <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
         <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-card *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
-      <mat-card-title-group>
-        <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
-      </mat-card-title-group>
-      <mat-card-content>
-        <ul>
-          <li>
-            <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
-          </li>
-          <li>
-            <b>Barcode</b>: {{ item.item_data.barcode }}
-          </li>
-          <li>
-            <b>Item status</b>: {{ item.item_data.base_status.desc }}
-          </li>
-        </ul>
-
-        <div *ngIf="item.request_data">
-          <mat-card *ngFor="let request of item.request_data; index as i">
+      <div *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
+        <mat-card>
+          <mat-card-title-group>
+            <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
+          </mat-card-title-group>
+          <mat-card-content>
             <ul>
               <li>
-                <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
+                <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
               </li>
-
               <li>
-
-                <b>Pickup Location: {{ request.pickup_location }} </b>
+                <b>Barcode</b>: {{ item.item_data.barcode }}
               </li>
-
+              <li>
+                <b>Item status</b>: {{ item.item_data.base_status.desc }}
+              </li>
             </ul>
-          </mat-card>
 
-          <mat-card *ngFor="item.request_data">
-            <b>Pickup location: {{ item.request_data.pickup_location }} </b>
-          </mat-card>
+            <div *ngIf="item.request_data">
+              <div *ngFor="let request of item.request_data; index as i">
+                <mat-card>
+                  <ul>
+                    <li>
+                      <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
+                    </li>
 
-          <div *ngIf="item.user_data">
-            Requested by: {{ item.user_data.full_name }} <span
-              *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
-          </div>
-        </div>
+                    <li>
+                      <b>Pickup Location: {{ request.pickup_location }} </b>
+                    </li>
+                  </ul>
+           
+                  <div *ngIf="item.user_data.full_name && item.user_data.contact_info.email">
+                    Requested by: {{ item.user_data.full_name }} <span
+                      *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
+                  </div>
+                </mat-card>
+              </div>
+            </div>
 
-
-
-      </mat-card-content>
-      <mat-card-actions>
-        <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
-      </mat-card-actions>
-    </mat-card>
-    <p>Total: {{ itemCount }}</p>
-  </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <p>Total: {{ itemCount }}</p>
+    </div>
   <app-print-button></app-print-button>
 </div>
