@@ -1,61 +1,69 @@
-<div *ngIf="items.length <= 0">
-  <mat-spinner diameter="50"></mat-spinner>
+<div class="loading-shade" *ngIf="loading">
+  <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
 </div>
-<mat-card>
-  <mat-card-header><h1>RMST Pick List</h1></mat-card-header>
-  <mat-card-content>
-    <ul>
-      <li>
-        <b>Today's Date</b>: {{ today | date: 'mediumDate' }}
-      </li>
-      <li>
-        <p><b>Total</b>: {{ items.length }}</p>
-      </li>
-    </ul>
-  </mat-card-content>
-</mat-card>
 
-<div *ngIf="items.length > 0">
-  <mat-form-field appearance="fill">
-    <mat-label>Hide/Show Blank RMST</mat-label>
-    <mat-select [(value)]="selectedOption" (selectionChange)="selectOption($event)">
-      <mat-option [value]="option.value" *ngFor="let option of selectOptions">{{ option.label }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-card *ngFor="let item of items; index as i" [className]="item.item_data.hidden? 'hidden' : 'nohide'">
-    <mat-card-title-group>
-      <mat-card-title><b>{{ i + 1 }}.</b> {{ item.bib_data.title }}</mat-card-title>
-    </mat-card-title-group>
+<div *ngIf="requestedResources">
+  <mat-card class="options">
+    <mat-card-header>
+      <h1>Options</h1>
+    </mat-card-header>
     <mat-card-content>
-          <ul>
-            <li>
-              <b>RMST Number</b>: {{ item.item_data.storage_location_id }}
-            </li>
-            <li>
-              <b>Barcode</b>: {{ item.item_data.barcode }}
-            </li>
-            <li>
-              <b>Item status</b>: {{ item.item_data.base_status.desc }}
-            </li>
+
+      <mat-checkbox [(ngModel)]="rmst_checked">Display requests without an RMST</mat-checkbox>
+      <mat-checkbox [(ngModel)]="requester_checked">Display requests without a requester</mat-checkbox>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <h1>RMST Pick List</h1>
+    </mat-card-header>
+    <mat-card-content>
+      <ul>
+        <li>
+          <b>Today's Date</b>: {{ today | date: 'mediumDate' }}
+        </li>
+        <li>
+          <p><b>Total</b>: {{ getTotalVisible() }}</p>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  <div>
+    <div *ngFor="let resource of getVisibleResources() | storageLocationIdSort: 'asc'; index as i">
+      <div *ngIf="resource.location.copy[0] && resource.location.copy[0].storage_location_id != '' || rmst_checked || requester_checked ">
+        <mat-card>
+          <mat-card-title-group>
+            <mat-card-title><b></b>{{ i+1 }}. {{ resource.resource_metadata.title }} </mat-card-title>
+            <button class="remove-button" mat-icon-button aria-label="Remove" (click)="hideResource(i)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-card-title-group>
+
+          <ul *ngFor="let copy of resource.location.copy">
+            <li>RMST: {{ copy.storage_location_id }} </li>
+            <li>Barcode: {{ copy.barcode }} </li>
+            <li>Status: {{ copy.base_status.desc }} </li>
           </ul>
 
-          <div *ngIf="item.request_data">
-            <div *ngFor="let request of item.request_data; index as i">
-              <b>Request {{ i + 1 }}</b>: {{ request.request_type }}
-            </div> 
 
-            <div *ngIf="item.user_data">
-              Requested by: {{ item.user_data.full_name }} <span *ngFor="let email of item.user_data.contact_info.email">({{ email.email_address }})</span>
-            </div>
-          </div>
-          
+          <ul *ngFor="let request of resource.request">
+            <li>Pickup Location: {{ request.destination.desc }} </li>
+            <li>Request Type: {{ request.request_type }} </li>
+            <li>Request Sub-Type: {{ request.request_sub_type.value }} </li>
+            <li>Requester: {{ request.requester.desc }}</li>
+          </ul>
+          <mat-card-content>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
 
-          
-    </mat-card-content>
-    <mat-card-actions>
-      <button class="remove-button" mat-button (click)="removeItem(item)">Remove</button>
-    </mat-card-actions>
-  </mat-card>
-  <p>Total: {{ itemCount }}</p>
+  </div>
 </div>
-<app-print-button></app-print-button>
+
+<div *ngIf="!loading">
+  <app-print-button></app-print-button>
+</div>

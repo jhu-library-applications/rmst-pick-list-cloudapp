@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
 import { PrintButtonComponent } from './print-button/print-button.component';
+import { StorageLocationIdSortPipe } from './storage-location-id-sort.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    PrintButtonComponent
+    PrintButtonComponent,
+    StorageLocationIdSortPipe
   ],
   imports: [
     MaterialModule,
