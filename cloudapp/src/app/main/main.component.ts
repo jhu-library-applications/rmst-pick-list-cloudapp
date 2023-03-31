@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertService } from '@exlibris/exl-cloudapp-angular-lib';
 import { RequestedResource, RequestedResources } from '../interfaces/requested-resources.interface';
 import { RequestedResourcesService } from '../services/requested_resources.service';
+import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
 
 @Component({
   selector: 'app-main',
@@ -16,12 +17,12 @@ export class MainComponent implements OnInit, OnDestroy {
   requestedResources: RequestedResources;
   rmst_checked: boolean = false;
   requester_checked: boolean = false;
+  currentlyAtLibCode: string;
+  curentlyAtCircDeskCode: string;
   
-  library: string = 'MAIN';
-  circ_desk: string = 'DEFAULT_CIRC_DESK';
-
   constructor(
     private alert: AlertService,
+    private eventsService: CloudAppEventsService,
     private requestedResourcesService: RequestedResourcesService,
   ) { }
 
@@ -30,9 +31,13 @@ export class MainComponent implements OnInit, OnDestroy {
       loading => this.loading = loading
     );
 
-    this.requestedResourcesService.getRequestedResources(this.library, this.circ_desk, 100, this.alert).subscribe(
-      result => {
-        this.requestedResources = result
+    this.eventsService.getInitData().subscribe(
+      data => {
+        this.requestedResourcesService.getRequestedResources(data.user.currentlyAtLibCode, data.user['currentlyAtCircDesk'], 100, this.alert).subscribe(
+          result => {
+            this.requestedResources = result
+          }
+        );
       }
     );
   }
