@@ -69,6 +69,7 @@ export interface RequestedResources {
     request_time: string
     link: string
     comment?: string
+    email: string
   }
   
   export interface Destination {

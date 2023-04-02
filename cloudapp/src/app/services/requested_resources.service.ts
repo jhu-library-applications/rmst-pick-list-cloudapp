@@ -23,7 +23,7 @@ export class RequestedResourcesService {
       finalize(() => this.loadingSubject.next(false)),
       catchError(error => {
         this.loadingSubject.next(false);
-        alert.error('Failed to retrieve entity: ' + error.message);
+        alert.error('Failed to retrieve resource: ' + error.message);
         throw error;
       })
     );

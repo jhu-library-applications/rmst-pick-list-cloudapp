@@ -9,8 +9,8 @@
     </mat-card-header>
     <mat-card-content>
 
-      <mat-checkbox [(ngModel)]="rmst_checked">Display requests without an RMST</mat-checkbox>
-      <mat-checkbox [(ngModel)]="requester_checked">Display requests without a requester</mat-checkbox>
+      <mat-checkbox [(ngModel)]="rmstChecked">Display requests without an RMST</mat-checkbox>
+      <mat-checkbox [(ngModel)]="requesterChecked">Display requests without a requester</mat-checkbox>
 
     </mat-card-content>
   </mat-card>
@@ -33,7 +33,8 @@
 
   <div>
     <div *ngFor="let resource of getVisibleResources() | storageLocationIdSort: 'asc'; index as i">
-      <div *ngIf="resource.location.copy[0] && resource.location.copy[0].storage_location_id != '' || rmst_checked || requester_checked ">
+      <div
+        *ngIf="resource.location.copy[0] && resource.location.copy[0].storage_location_id != '' || rmstChecked || requesterChecked ">
         <mat-card>
           <mat-card-title-group>
             <mat-card-title><b></b>{{ i+1 }}. {{ resource.resource_metadata.title }} </mat-card-title>
@@ -42,19 +43,31 @@
             </button>
           </mat-card-title-group>
 
-          <ul *ngFor="let copy of resource.location.copy">
-            <li>RMST: {{ copy.storage_location_id }} </li>
-            <li>Barcode: {{ copy.barcode }} </li>
-            <li>Status: {{ copy.base_status.desc }} </li>
-          </ul>
+          <dl *ngFor="let copy of resource.location.copy">
+            <dt><strong>RMST</strong></dt>
+            <dd>{{ copy.storage_location_id }}</dd>
+            <dt><strong>Barcode</strong></dt>
+            <dd>{{ copy.barcode }}</dd>
+            <dt><strong>Status</strong></dt>
+            <dd>{{ copy.base_status.desc }}</dd>
+          </dl>
+
+          <dl *ngFor="let request of resource.request">
+            <dt><strong>Pickup Location</strong></dt>
+            <dd>{{ request.destination.desc }}</dd>
+            <dt><strong>Request Type</strong></dt>
+            <dd>{{ request.request_type }}</dd>
+            <dt><strong>Request Sub-Type</strong></dt>
+            <dd>{{ request.request_sub_type.value }}</dd>
+            <dt><strong>Requester</strong></dt>
+            <dd>{{ request.requester.desc }}</dd>
+            <div *ngIf="request.email">
+              <dt>Requester Email</dt>
+              <dd>{{ request.email }}</dd>
+            </div>
+          </dl>
 
 
-          <ul *ngFor="let request of resource.request">
-            <li>Pickup Location: {{ request.destination.desc }} </li>
-            <li>Request Type: {{ request.request_type }} </li>
-            <li>Request Sub-Type: {{ request.request_sub_type.value }} </li>
-            <li>Requester: {{ request.requester.desc }}</li>
-          </ul>
           <mat-card-content>
           </mat-card-content>
         </mat-card>
