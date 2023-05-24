@@ -21,6 +21,11 @@ dl {
   padding: 0;
 }
 
+dl { 
+  display: table-cell;
+  width: inherit;
+}
+
 dt,
 dd {
   display: flex;
