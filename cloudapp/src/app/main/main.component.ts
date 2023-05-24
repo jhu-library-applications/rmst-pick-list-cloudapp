@@ -16,8 +16,6 @@ export class MainComponent implements OnInit, OnDestroy {
   noItemsMessage: string;
   today: number = Date.now();
   requestedResources: RequestedResources;
-  rmstChecked: boolean = false;
-  requesterChecked: boolean = false;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
 
@@ -65,7 +63,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getVisibleResources(): RequestedResource[] {
     return this.requestedResources.requested_resource.filter(resource =>
-      resource.location.copy[0] && resource.location.copy[0].storage_location_id != '' || this.rmstChecked || this.requesterChecked
+      resource.location.copy[0] && resource.location.copy[0].storage_location_id != ''
     );
   }
 
