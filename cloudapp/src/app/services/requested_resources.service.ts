@@ -19,7 +19,7 @@ export class RequestedResourcesService {
     this.loadingSubject.next(true);
 
     return this.restService.call<RequestedResources>(apiUrl).pipe(
-      tap(result => console.log('result', result)),
+      tap(result => console.log('result', JSON.stringify(result))),
       finalize(() => this.loadingSubject.next(false)),
       catchError(error => {
         this.loadingSubject.next(false);

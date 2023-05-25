@@ -4,6 +4,7 @@ import { RequestedResource, RequestedResources } from '../interfaces/requested-r
 import { RequestedResourcesService } from '../services/requested_resources.service';
 import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
 import { UserInfoService } from '../services/user_info.service';
+import { RequestInfoService } from '../services/request_info.service';
 
 @Component({
   selector: 'app-main',
@@ -16,8 +17,6 @@ export class MainComponent implements OnInit, OnDestroy {
   noItemsMessage: string;
   today: number = Date.now();
   requestedResources: RequestedResources;
-  rmstChecked: boolean = false;
-  requesterChecked: boolean = false;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
 
@@ -25,7 +24,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private alert: AlertService,
     private eventsService: CloudAppEventsService,
     private requestedResourcesService: RequestedResourcesService,
-    private userInfoService: UserInfoService
+    private userInfoService: UserInfoService,
+    private requestInfoService: RequestInfoService
   ) { }
 
   ngOnInit() {
@@ -41,12 +41,28 @@ export class MainComponent implements OnInit, OnDestroy {
               this.requestedResources = result
 
               this.requestedResources.requested_resource.forEach(resource => {
+                console.log('Resource:', resource)
+                this.addRequestInfoToRequestedResource(resource);
                 this.addEmailToRequestedResource(resource);
               });
             }
           );
       }
     );
+  }
+
+  addRequestInfoToRequestedResource(resource: RequestedResource) {
+    resource.request.forEach(request => {
+      if (request.link) {
+        this.requestInfoService.getRequestInfo(request.link, this.alert).subscribe(result => {
+          console.log('Request Info: ', result);
+          this.requestedResources.requested_resource.forEach(() => {
+            request.description = result.description
+            console.log(request)
+          });
+        });
+      }
+    });
   }
 
   addEmailToRequestedResource(resource: RequestedResource) {
@@ -64,9 +80,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   getVisibleResources(): RequestedResource[] {
-    return this.requestedResources.requested_resource.filter(resource =>
-      resource.location.copy[0] && resource.location.copy[0].storage_location_id != '' || this.rmstChecked || this.requesterChecked
-    );
+    return this.requestedResources.requested_resource
   }
 
   getTotalVisible(): number {
