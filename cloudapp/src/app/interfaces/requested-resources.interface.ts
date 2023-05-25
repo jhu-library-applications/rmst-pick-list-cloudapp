@@ -58,6 +58,7 @@ export interface RequestedResources {
   }
   
   export interface Request {
+    description: any
     id: string
     destination: Destination
     requester: Requester
