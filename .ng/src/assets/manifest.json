@@ -1,0 +1,15 @@
+{
+   "id": "rmst-pick-list",
+   "title": "RMST Pick List",
+   "subtitle": "Cloud App for printing a pick list from an RMST search",
+   "author": "JHU Library Applications Group",
+   "icon": {
+      "type": "font",
+      "value": "fa fa-list"
+   },
+   "contentSecurity": {
+      "sandbox": {
+         "modals": true
+      }
+   }
+}

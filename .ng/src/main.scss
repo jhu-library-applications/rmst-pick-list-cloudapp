@@ -1,0 +1,19 @@
+
+@import './app/main/main.component.theme';
+
+@mixin themed-styles($theme, $typography) {
+    /* Include themed component mixins or theme dependent styles here */
+    @include main-component-theme($theme, $typography);
+}
+
+@mixin global-styles {
+    /* Add global styles here */
+
+    @media print {
+        @page { 
+          size: 8.5in 11in;
+          margin: .25in;
+          margin-bottom: .5in;
+        }
+      }
+}
