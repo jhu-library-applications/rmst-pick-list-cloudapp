@@ -49,3 +49,4 @@ build
 cloudapp/src/assets/manifest*.json
 config.json
 .ng/node_modules/**
+.ng/
