@@ -17,6 +17,8 @@
         </li>
       </ul>
       <div *ngIf="!loading">
+        <mat-checkbox class="sort-oldest-request" [(ngModel)]="sortRequestAsc">Sort by Oldest Request</mat-checkbox>
+ 
         <app-print-button></app-print-button>
       </div>
     </mat-card-content>
@@ -50,6 +52,8 @@
                 <dd>{{ request.destination.desc }}</dd>
                 <dt><strong>Requester</strong></dt>
                 <dd>{{ request.requester.desc }}</dd>
+                <dt><strong>Request Date</strong></dt>
+                <dd>{{ request.request_date }}</dd>
                 <div *ngIf="request.email">
                   <dt>Requester Email</dt>
                   <dd>{{ request.email }}</dd>

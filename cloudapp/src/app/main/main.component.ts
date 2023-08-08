@@ -5,6 +5,8 @@ import { RequestedResourcesService } from '../services/requested_resources.servi
 import { CloudAppEventsService } from '@exlibris/exl-cloudapp-angular-lib';
 import { UserInfoService } from '../services/user_info.service';
 import { RequestInfoService } from '../services/request_info.service';
+import dayjs from 'dayjs';
+import { toInteger } from 'lodash';
 
 @Component({
   selector: 'app-main',
@@ -19,6 +21,7 @@ export class MainComponent implements OnInit, OnDestroy {
   requestedResources: RequestedResources;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
+  sortRequestAsc: boolean = true;
 
   constructor(
     private alert: AlertService,
@@ -41,7 +44,6 @@ export class MainComponent implements OnInit, OnDestroy {
               this.requestedResources = result
 
               this.requestedResources.requested_resource.forEach(resource => {
-                console.log('Resource:', resource)
                 this.addRequestInfoToRequestedResource(resource);
                 this.addEmailToRequestedResource(resource);
               });
@@ -55,10 +57,8 @@ export class MainComponent implements OnInit, OnDestroy {
     resource.request.forEach(request => {
       if (request.link) {
         this.requestInfoService.getRequestInfo(request.link, this.alert).subscribe(result => {
-          console.log('Request Info: ', result);
           this.requestedResources.requested_resource.forEach(() => {
-            request.description = result.description
-            console.log(request)
+            request.description = result.description;
           });
         });
       }
@@ -80,7 +80,23 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   getVisibleResources(): RequestedResource[] {
-    return this.requestedResources.requested_resource
+    let resources = this.requestedResources.requested_resource;
+
+    if (this.sortRequestAsc) {
+      resources = resources.sort((a, b) => {
+        const dateA = toInteger(dayjs(a.request[0]?.request_time));
+        const dateB = toInteger(dayjs(b.request[0]?.request_time));
+        return dateA - dateB; // Ascending order
+      });
+    } else {
+      resources = resources.sort((a, b) => {
+        const dateA = toInteger(dayjs(a.request[0]?.request_time));
+        const dateB = toInteger(dayjs(b.request[0]?.request_time));
+        return dateB - dateA; // Descending order
+      });
+    }
+
+    return resources;
   }
 
   getTotalVisible(): number {
