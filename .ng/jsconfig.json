@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es5"
-  },
-  "angularCompilerOptions": {
-    "strictTemplates": true
-  }
-}
