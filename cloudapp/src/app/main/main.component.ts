@@ -21,7 +21,7 @@ export class MainComponent implements OnInit, OnDestroy {
   requestedResources: RequestedResources;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
-  sortRequestAsc: boolean = true;
+  sortRequestAsc: boolean = false;
 
   constructor(
     private alert: AlertService,
@@ -88,14 +88,8 @@ export class MainComponent implements OnInit, OnDestroy {
         const dateB = toInteger(dayjs(b.request[0]?.request_time));
         return dateA - dateB; // Ascending order
       });
-    } else {
-      resources = resources.sort((a, b) => {
-        const dateA = toInteger(dayjs(a.request[0]?.request_time));
-        const dateB = toInteger(dayjs(b.request[0]?.request_time));
-        return dateB - dateA; // Descending order
-      });
-    }
-
+    } 
+    
     return resources;
   }
 
