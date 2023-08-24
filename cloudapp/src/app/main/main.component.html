@@ -17,7 +17,8 @@
         </li>
       </ul>
       <div *ngIf="!loading">
-        <app-sort-checkbox [(sortRequestAsc)]="sortRequestAsc"></app-sort-checkbox> 
+        <mat-checkbox class="sort-oldest-request" [(ngModel)]="sortRequestAsc">Sort by Oldest Request</mat-checkbox>
+ 
         <app-print-button></app-print-button>
       </div>
     </mat-card-content>
@@ -63,5 +64,6 @@
         </mat-card>
       </div>
     </div>
+
   </div>
 </div>
