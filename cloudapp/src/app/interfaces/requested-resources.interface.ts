@@ -58,7 +58,7 @@ export interface RequestedResources {
   }
   
   export interface Request {
-    description: any
+    description?: any
     id: string
     destination: Destination
     requester: Requester
@@ -70,7 +70,7 @@ export interface RequestedResources {
     request_time: string
     link: string
     comment?: string
-    email: string
+    email?: string
   }
   
   export interface Destination {
