@@ -24,7 +24,8 @@
 
   <div>
     <div *ngFor="let resource of getVisibleResources() | storageLocationIdSort: 'asc'; index as i">
-      <div *ngIf="resource.location.copy[0]">
+
+      <div *ngIf="resource.location">
         <mat-card>
           <mat-card-title-group>
             <mat-card-title><b></b>{{ i+1 }}. {{ resource.resource_metadata.title }} </mat-card-title>
@@ -33,6 +34,9 @@
             </button>
           </mat-card-title-group>
           <ng-container *ngFor="let request of resource.request">
+            <fieldset>
+              <legend>Request {{ request.id }}</legend>
+ 
             <mat-card-content>
               <dl *ngFor="let copy of resource.location.copy">
                 <dt><strong>RMST</strong></dt>
@@ -44,8 +48,10 @@
               </dl>
           
               <dl>
+                <div *ngIf="request.description">
                 <dt><strong>Description</strong></dt>
                 <dd>{{ request.description }}</dd>
+                </div>
                 <dt><strong>Pickup Location</strong></dt>
                 <dd>{{ request.destination.desc }}</dd>
                 <dt><strong>Requester</strong></dt>
@@ -56,6 +62,8 @@
                 </div>
               </dl>
             </mat-card-content>
+          </fieldset>
+          <br>
           </ng-container>          
         </mat-card>
       </div>
