@@ -19,6 +19,7 @@ export class MainComponent implements OnInit, OnDestroy {
   requestedResources: RequestedResources;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
+  sortOption: any;
 
   constructor(
     private alert: AlertService,
@@ -29,6 +30,8 @@ export class MainComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.sortOption = 'storageLocationIdSort';
+    
     this.requestedResourcesService.isLoading().subscribe(
       loading => this.loading = loading
     );
@@ -38,7 +41,8 @@ export class MainComponent implements OnInit, OnDestroy {
         this.requestedResourcesService.getRequestedResources(data.user.currentlyAtLibCode,
           data.user['currentlyAtCircDesk'], 100, this.alert).subscribe(
             result => {
-              this.requestedResources = result
+              this.requestedResources = result;
+            
 
               this.requestedResources.requested_resource.forEach(resource => {
                 console.log('Resource:', resource)
@@ -80,8 +84,39 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   getVisibleResources(): RequestedResource[] {
-    return this.requestedResources.requested_resource
-  }
+    switch (this.sortOption) {
+      case "storageLocationIdSort'":
+        return this.requestedResources.requested_resource.sort((a, b) => {
+          console.log(a);
+          const storageLocationIdA = a.location?.copy?.length ? a.location.copy[0].storage_location_id : '';
+          const storageLocationIdB = b.location?.copy?.length ? b.location.copy[0].storage_location_id : '';
+          return storageLocationIdA.localeCompare(storageLocationIdB);
+        });
+
+        case "storageLocationIdSortWithDate":
+          return this.requestedResources.requested_resource.sort((a, b) => {
+            const storageLocationIdA = a.location?.copy?.[0]?.storage_location_id || '';
+            const storageLocationIdB = b.location?.copy?.[0]?.storage_location_id || '';
+            const comparison = storageLocationIdA.localeCompare(storageLocationIdB);
+            if (comparison !== 0) return comparison;
+            
+            const dateA = new Date(a.request[0]?.request_time);
+            const dateB = new Date(b.request[0]?.request_time);
+            return dateA.getTime() - dateB.getTime();
+          });
+    
+        case "requestDateSort":
+          return this.requestedResources.requested_resource.sort((a, b) => {
+            const dateA = new Date(a.request[0]?.request_time);
+            const dateB = new Date(b.request[0]?.request_time);
+            return dateA.getTime() - dateB.getTime();
+          });
+    
+        default:
+          return this.requestedResources.requested_resource;
+      }
+
+}
 
   getTotalVisible(): number {
     return this.getVisibleResources().length;

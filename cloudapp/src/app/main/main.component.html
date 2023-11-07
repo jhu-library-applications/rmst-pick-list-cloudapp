@@ -6,6 +6,7 @@
   <mat-card>
     <mat-card-title-group>
       <mat-card-title>RMST Pick List</mat-card-title>
+
     </mat-card-title-group>
     <mat-card-content>
       <ul>
@@ -15,16 +16,28 @@
         <li>
           <p><b>Total</b>: {{ getTotalVisible() }}</p>
         </li>
+
       </ul>
+
       <div *ngIf="!loading">
+        <mat-label><b>Sorting Options</b></mat-label>
+        <br>
+        <mat-select [(value)]="sortOption">
+          <mat-option value="storageLocationIdSort">Sort by Storage Location ID</mat-option>
+          <mat-option value="storageLocationIdSortWithDate">Sort by Storage Location ID and Request Date (Oldest
+            First)</mat-option>
+          <mat-option value="requestDateSort">Sort by Request Date (Oldest First)</mat-option>
+        </mat-select>
+        <br>
         <app-print-button></app-print-button>
       </div>
     </mat-card-content>
   </mat-card>
 
   <div>
-    <div *ngFor="let resource of getVisibleResources() | storageLocationIdSort: 'asc'; index as i">
-      <div *ngIf="resource.location.copy[0]">
+    <div *ngFor="let resource of getVisibleResources() index as i">
+
+      <div *ngIf="resource.location">
         <mat-card>
           <mat-card-title-group>
             <mat-card-title><b></b>{{ i+1 }}. {{ resource.resource_metadata.title }} </mat-card-title>
@@ -33,30 +46,39 @@
             </button>
           </mat-card-title-group>
           <ng-container *ngFor="let request of resource.request">
-            <mat-card-content>
-              <dl *ngFor="let copy of resource.location.copy">
-                <dt><strong>RMST</strong></dt>
-                <dd>{{ copy.storage_location_id }}</dd>
-                <dt><strong>Barcode</strong></dt>
-                <dd>{{ copy.barcode }}</dd>
-                <dt><strong>Status</strong></dt>
-                <dd>{{ copy.base_status.desc }}</dd>
-              </dl>
-          
-              <dl>
-                <dt><strong>Description</strong></dt>
-                <dd>{{ request.description }}</dd>
-                <dt><strong>Pickup Location</strong></dt>
-                <dd>{{ request.destination.desc }}</dd>
-                <dt><strong>Requester</strong></dt>
-                <dd>{{ request.requester.desc }}</dd>
-                <div *ngIf="request.email">
-                  <dt>Requester Email</dt>
-                  <dd>{{ request.email }}</dd>
-                </div>
-              </dl>
-            </mat-card-content>
-          </ng-container>          
+            <fieldset>
+              <legend>Request {{ request.id }}</legend>
+
+              <mat-card-content>
+                <dl *ngFor="let copy of resource.location.copy">
+                  <dt><strong>RMST</strong></dt>
+                  <dd>{{ copy.storage_location_id }}</dd>
+                  <dt><strong>Barcode</strong></dt>
+                  <dd>{{ copy.barcode }}</dd>
+                  <dt><strong>Status</strong></dt>
+                  <dd>{{ copy.base_status.desc }}</dd>
+                </dl>
+
+                <dl>
+                  <div *ngIf="request.description">
+                    <dt><strong>Description</strong></dt>
+                    <dd>{{ request.description }}</dd>
+                  </div>
+                  <dt><strong>Pickup Location</strong></dt>
+                  <dd>{{ request.destination.desc }}</dd>
+                  <dt><strong>Requester</strong></dt>
+                  <dd>{{ request.requester.desc }}</dd>
+                  <dt> Request Date </dt>
+                  <dd>{{ request.request_time | date: 'short' : 'EST' }}</dd>
+                  <div *ngIf="request.email">
+                    <dt>Requester Email</dt>
+                    <dd>{{ request.email }}</dd>
+                  </div>
+                </dl>
+              </mat-card-content>
+            </fieldset>
+            <br>
+          </ng-container>
         </mat-card>
       </div>
     </div>
