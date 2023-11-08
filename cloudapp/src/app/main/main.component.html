@@ -33,6 +33,9 @@
             </button>
           </mat-card-title-group>
           <ng-container *ngFor="let request of resource.request">
+            <fieldset>
+              <legend>Request {{ request.id }}</legend>
+ 
             <mat-card-content>
               <dl *ngFor="let copy of resource.location.copy">
                 <dt><strong>RMST</strong></dt>
@@ -44,8 +47,10 @@
               </dl>
           
               <dl>
+                <div *ngIf="request.description">
                 <dt><strong>Description</strong></dt>
                 <dd>{{ request.description }}</dd>
+                </div>
                 <dt><strong>Pickup Location</strong></dt>
                 <dd>{{ request.destination.desc }}</dd>
                 <dt><strong>Requester</strong></dt>
@@ -56,7 +61,9 @@
                 </div>
               </dl>
             </mat-card-content>
-          </ng-container>          
+          </fieldset>
+          <br>
+          </ng-container>         
         </mat-card>
       </div>
     </div>
