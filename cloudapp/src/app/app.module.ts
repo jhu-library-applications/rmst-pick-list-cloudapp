@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
 import { PrintButtonComponent } from './print-button/print-button.component';
 import { ApplySortPipe } from './main/apply_sort_pipe';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ApplySortPipe } from './main/apply_sort_pipe';
   imports: [
     MaterialModule,
     BrowserModule,
+    MatInputModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,

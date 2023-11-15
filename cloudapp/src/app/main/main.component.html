@@ -2,6 +2,8 @@
   <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
 </div>
 
+
+
 <div *ngIf="requestedResources">
   <mat-card>
     <mat-card-title-group>
@@ -19,7 +21,9 @@
       <div *ngIf="!loading">
         <app-print-button></app-print-button>
 
-        <mat-form-field class="sort" appearance="fill">
+        <br>
+        <br>
+        <mat-form-field class="sort" appearance="outline" class="wide">
           <mat-label>Sort Selection</mat-label>
           <mat-select [(value)]="selectedSort" title="Sort Selection">
             <mat-option value="storageLocationIdSort">Sort by RMST</mat-option>
@@ -28,13 +32,30 @@
         </mat-form-field>
         <br/>
         <br/>
+        
+       
+        
+        <mat-form-field appearance="outline" class="wide">
+          <mat-label>Filter By</mat-label>
+          <mat-select [(value)]="selectedFilterType">
+            <mat-option value="pickupLocation">Pickup Location</mat-option>
+            <mat-option value="requestDate">Request Date</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="wide">
+          <mat-label>Filter Text</mat-label>
+          <input matInput [(ngModel)]="filterText" placeholder="Type to filter...">
+        </mat-form-field>
+        
+
       </div>
     </mat-card-content>
   </mat-card>
 
   <div>
-    <div *ngFor="let resource of getVisibleResources() | applySort:selectedSort; index as i">
-      <div *ngIf="resource.location.copy[0]">
+    <div *ngFor="let resource of getFilteredResources() | applySort:selectedSort; index as i">
+      <div>
         <mat-card>
           <mat-card-title-group>
             <mat-card-title><b></b>{{ i+1 }}. {{ resource.resource_metadata.title }} </mat-card-title>
@@ -47,6 +68,11 @@
               <legend>Request {{ request.id }}</legend>
 
               <mat-card-content>
+                <div *ngIf="resource.location.copy.length === 0">
+                  <mat-card>
+                    Warning! No copy information provided with request.
+                  </mat-card>
+                </div>
                 <dl *ngFor="let copy of resource.location.copy">
                   <dt><strong>RMST</strong></dt>
                   <dd>{{ copy.storage_location_id }}</dd>

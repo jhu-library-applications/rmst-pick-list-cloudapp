@@ -20,6 +20,8 @@ export class MainComponent implements OnInit, OnDestroy {
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
   selectedSort = 'storageLocationIdSort'; 
+  filterText: string = ''; 
+  selectedFilterType: string = 'pickupLocation';
 
   constructor(
     private alert: AlertService,
@@ -95,6 +97,27 @@ export class MainComponent implements OnInit, OnDestroy {
       this.requestedResources.requested_resource = this.requestedResources.requested_resource.filter(resource => resource.location.holding_id.value !== resourceId);
     }
   }
+
+  getFilteredResources(): RequestedResource[] {
+    if (!this.filterText) {
+      return this.getVisibleResources();
+    }
+
+    return this.getVisibleResources().filter(resource => {
+      return resource.request.some(request => {
+        switch (this.selectedFilterType) {
+          case 'pickupLocation':
+            return request.destination.desc.toLowerCase().includes(this.filterText.toLowerCase());
+          case 'requestDate':
+
+            return new Date(request.request_time).toDateString().toLowerCase().includes(this.filterText.toLowerCase());
+          default:
+            return false;
+        }
+      });
+    });
+  }
+
 
   ngOnDestroy(): void {
   }
