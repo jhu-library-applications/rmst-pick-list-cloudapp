@@ -30,8 +30,8 @@ export interface RequestedResources {
   export interface Copy {
     pid: string
     barcode: string
-    base_status: BaseStatus
-    alternative_call_number: string
+    base_status?: BaseStatus
+    alternative_call_number?: string
     storage_location_id: string
     link: string
   }
@@ -58,7 +58,7 @@ export interface RequestedResources {
   }
   
   export interface Request {
-    description: any
+    description?: any
     id: string
     destination: Destination
     requester: Requester
@@ -70,7 +70,7 @@ export interface RequestedResources {
     request_time: string
     link: string
     comment?: string
-    email: string
+    email?: string
   }
   
   export interface Destination {

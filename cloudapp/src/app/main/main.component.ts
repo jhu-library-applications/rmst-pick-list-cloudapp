@@ -19,6 +19,7 @@ export class MainComponent implements OnInit, OnDestroy {
   requestedResources: RequestedResources;
   currentlyAtLibCode: string;
   curentlyAtCircDeskCode: string;
+  selectedSort = 'storageLocationIdSort'; 
 
   constructor(
     private alert: AlertService,

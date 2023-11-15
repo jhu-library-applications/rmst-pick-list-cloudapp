@@ -10,6 +10,26 @@
   .remove-button {
       display: none;
   }
+
+  dl {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  dt, dd {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 0;
+    padding: .25em;
+    box-sizing: border-box;
+  }
 }
 
 dl {
@@ -21,8 +41,7 @@ dl {
   padding: 0;
 }
 
-dt,
-dd {
+dt, dd {
   display: flex;
   flex: 1;
   justify-content: space-between;
